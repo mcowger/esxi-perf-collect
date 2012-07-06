@@ -84,10 +84,10 @@ class myThread (threading.Thread):
 
 def run_esxtop(hostname):
 	my_env = os.environ
-	my_env["VI_SESSIONFILE"] = ".sessionfile"
+	my_env["VI_SESSIONFILE"] = "./.sessionfile"
 
 	mydata = open(hostname+".emcdata.csv",'w')
-	p = subprocess.Popen([resxtop,"-c .sessionfile,"--vihost",hostname,"-b","-d","15","-n",str(collectioninterval)],env=my_env,stdout=mydata)
+	p = subprocess.Popen([resxtop,"--vihost",hostname,"-c",".esxtop50rc","-b","-d","15","-n",str(collectioninterval)],env=my_env,stdout=mydata)
 	sys.stdout.write(hostname + '...started\n')
 
 
