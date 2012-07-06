@@ -46,6 +46,6 @@ print output
 
 
 print "File (possibly) uploaded.  Inform your EMC representative to check CSFTP for the following file: ftp://csftp.emc.com/incoming/" + zipfilename
-print "It should be ready in 20 minutes."
+print "It should be ready in 5 minutes."
 
 print "...or you can simply email or FTP the above file manually."
