@@ -126,3 +126,8 @@ Thumbs.db
 # Folder config file
 Desktop.ini
 
+*.zip
+*.sessionfile
+*.esxtop50rc
+*.csv
+esxhosts
