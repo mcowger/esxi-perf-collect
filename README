@@ -1,0 +1,36 @@
+This file describes how to use the ESXi Performance Collection Scripts.  They are primarily designed to be used by EMC engineers and customers to collect performance data from ESXi/vSphere environments for troubleshooting and sizing purposes.
+
+No warrenties implied.
+
+Requirements:
+vSphere 4+
+vCenter 4+
+vMA 5.x
+
+General Instructions:
+
+
+
+1)	SSH into your vMA.  
+2)	Create a file called ‘esxhosts’, and in it enter the names of the ESX(i) hosts you’d like to monitor.  You can use 'vi' to create the file.  The hostnames should be the same ones that appear in vCenter. Example:
+
+-----------
+host1.domain.internal
+host2.domain.internal
+----------
+3)	Retrieve the script files by running the following command (simply cut & paste, all one line):
+
+wget https://raw.github.com/mcowger/esxi-perf-collect/master/collectperf.py && wget https://raw.github.com/mcowger/esxi-perf-collect/master/submit.py
+
+4)	Run ‘python collectperf.py’.  You will be asked a series of authentication questions for your environment:  
+5)	Enter the number of collection iterations you want to run.  A handy chart is provided.  We recommend at least 1 days worth, if possible (1440 iterations).   
+
+6)	The script will output some status and summary information, including an estimate of when collection will be complete:  
+
+7)	When the collection is complete.  Run ‘python submit.py’ from the same directory.  The script will collect the performance files, compress them and (attempt) to upload them to EMC’s secure FTP site, where they can be collected by your EMC account team.  Please send your account team the URL that is provided in the output, as well as the MD5 SUM for verififcation:  
+
+8)	In case the FTP upload fails (due to firewall rules, etc), you can use alternate means to transfer the file to EMC.  Contact your local EMC Technical Consultant or vSpecialist for assistance.
+
+ 
+
+
