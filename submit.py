@@ -11,7 +11,7 @@ import sys
 
 
 def findprocessbyname(processname):
-	return subprocess.Popen(["pidof",processname],stdout=subprocess.PIPE).stdout.read()
+	return subprocess.Popen(["ps -ef | grep resxtop | grep -v grep"],shell=True,stdout=subprocess.PIPE).stdout.read()
 
 	
 def processrunning(processname):

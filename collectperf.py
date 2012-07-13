@@ -39,7 +39,8 @@ else:
 	print "found!"
 print "Reading file esxhosts"
 for line in open('esxhosts'):
-	hosts.append(line.strip())
+	if (len(line) > 2):
+		hosts.append(line.strip())
 print "Entries: " + str(len(hosts))
 
 vcenterhost = raw_input("Enter vCenter Hostname/IP: ")
@@ -47,17 +48,14 @@ print "Enter vCenter Credentials"
 username,password = login()
 
 
-print """Please select a number of iterations to collect data (collects data every 15s):
-1 day = 5760
-2 days = 11520
-3 days = 17280
+print """Please select a number of minutes to collect data (collects data every 60s):
+1 day = 1440 (minutes)
 """
 
 
 collectioninterval = int(raw_input("Enter collection iterations: "))
-comeback = (float(collectioninterval) * 15) / 86400
-sizeestimate = round((1.333 * len(hosts) * collectioninterval)/1024,2)
-print "Size Estimate for data collection: "  + str(sizeestimate) + "MB"
+comeback = round((float(collectioninterval) * 1) / 60,2)
+
 
 print "Writing esxtop config"
 f = open('.esxtop50rc','w')
@@ -87,7 +85,7 @@ def run_esxtop(hostname):
 	my_env["VI_SESSIONFILE"] = "./.sessionfile"
 
 	mydata = open(hostname+".emcdata.csv",'w')
-	p = subprocess.Popen([resxtop,"--vihost",hostname,"-c",".esxtop50rc","-b","-d","15","-n",str(collectioninterval)],env=my_env,stdout=mydata)
+	p = subprocess.Popen([resxtop,"--vihost",hostname,"-c",".esxtop50rc","-b","-d","60","-n",str(collectioninterval)],env=my_env,stdout=mydata)
 	sys.stdout.write(hostname + '...started\n')
 
 
@@ -101,7 +99,7 @@ for hostname in hosts:
 	time.sleep(1)
 
 
-print "Collection Started.  Come back in " + str(comeback) + " days and run submit.py"
+print "Collection Started.  Come back in " + str(comeback) + " minutes and run submit.py"
 
 	
 
