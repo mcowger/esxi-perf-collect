@@ -99,7 +99,7 @@ for hostname in hosts:
 	time.sleep(1)
 
 
-print "Collection Started.  Come back in " + str(comeback) + " minutes and run submit.py"
+print "Collection Started.  Come back in " + str(comeback) + " hours and run submit.py"
 
 	
 
