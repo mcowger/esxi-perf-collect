@@ -9,10 +9,10 @@ vMA 5.x
 
 General Instructions:
 
-1)	SSH into your vMA.  
+1)	SSH into your vMA as the regular vi-admin user.  
 2)	Retrieve the script files by running the following command (simply cut & paste, all one line):
 
-wget http://raw.github.com/mcowger/esxi-perf-collect/master/collectperf.py && wget http://raw.github.com/mcowger/esxi-perf-collect/master/submit.py && wget http://raw.github.com/mcowger/esxi-perf-collect/master/gethosts.pl
+wget -O - https://github.com/downloads/mcowger/esxi-perf-collect/collectperf.V1.tgz | tar -xvzf -
 
 3) Run 'perl gethosts.pl --server <ip / hostname of vcenter>'' to create a file called 'esxhosts' in the current directory.  You will be prompted for credentials - use the same ones as when logging into the vSphere Client.  It will be populated with the hostnames of your environment.  If required, you can edit this file manually using 'vi'. 
 4)	Run ‘python collectperf.py’.  You will be prompted for credentials - use the same ones as when logging into the vSphere Client.  
