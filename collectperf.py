@@ -62,11 +62,17 @@ f = open('.esxtop50rc','w')
 f.write(esxtopconfig)
 f.close()
 
-print "Saving session file"
+print "Saving session file..."
 p = subprocess.call(["/usr/lib/vmware-vcli/apps/session/save_session.pl","--username",username,"--server",vcenterhost,"--password",password,"--savesessionfile",".sessionfile"])
 
-
-
+my_env["VI_SESSIONFILE"] = "./.sessionfile"
+print "Collecting scsi device data for correlation..."
+for hostname in hosts:
+	print "Collecting for " + hostname
+	p = subprocess.Popen([resxtop,"--vihost",hostname,"-m"],env=my_env,stdout=mydata)
+	thishostfh = open(hostname+".emcdata.scsidevs")
+	thishostfh.write(p.stdout.read())
+	thishostfh.close()
 
 	
 	
@@ -96,7 +102,7 @@ for hostname in hosts:
 	thread.start()
 
 	threadList.append(thread)
-	time.sleep(1)
+	time.sleep(.2)
 
 
 print "Collection Started.  Come back in " + str(comeback) + " hours and run submit.py"

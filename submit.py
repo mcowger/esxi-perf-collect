@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-
+import csv
+import re
 import zipfile
 import os
 import string
@@ -8,6 +9,41 @@ import random
 import glob
 import subprocess
 import sys
+from optparse import OptionParser
+
+
+def doBCSDfilter(filename):
+	columnMatch = re.compile(r'Physical Disk\([\w+|\-|\:]+\)\\[Commands/sec|Reads/sec|Writes/sec|MBytes Read/sec|MBytes Written/sec]',re.S)
+	esxtopReader = csv.reader(open(filename,'rb'),delimiter=',',quotechar='"')
+	filteredWriter = csv.writer(open(filename + '.bcsd.filtered.csv','wb'), delimiter=',')
+	curIndex = 0
+	colIndexesIWant = [0]
+	headerLine = esxtopReader.next()
+	newHeaderLine = []
+	newHeaderLine.append('(PDH-CSV 4.0) (EST)(0)')
+	for columnName in headerLine:
+		#print "Considering " + columnName
+		#print columnName
+		if columnMatch.search(columnName):
+			#print "Keeping index " + columnName + " @ " + str(curIndex)
+			colIndexesIWant.append(curIndex)
+			newHeaderLine.append(columnName.strip())
+		
+		curIndex = curIndex + 1
+	#print "Desired indexes " + str(colIndexesIWant)
+
+	filteredWriter.writerow(newHeaderLine)
+
+	totalLines = 0
+	for dataLine in esxtopReader:
+		totalLines = totalLines + 1
+		filteredDataLine = []
+		for neededIndex in colIndexesIWant:
+			#print "Copying index " + str(neededIndex) + " to filtered for line"
+			filteredDataLine.append(dataLine[neededIndex].strip())
+
+		filteredWriter.writerow(filteredDataLine)
+	print "Processed " + str(totalLines) + " total lines for BCSD output for " + filename
 
 
 def findprocessbyname(processname):
@@ -32,9 +68,12 @@ randomstring = "".join(random.sample(string.letters+string.digits, 5))
 filebase="emcdata." + randomstring
 zipfilename = filebase + ".zip"
 myfile = zipfile.ZipFile(zipfilename,'w')
-for filename in glob.glob('*.csv'):
+f = open("emc_esxscan.emcdata.txt")
+f.close()
+for filename in glob.glob('*.emcdata*'):
 	myfile.write(filename, os.path.basename(filename), zipfile.ZIP_DEFLATED)
-	os.remove(filename)
+	doBCSDfilter(filename)
+	#os.remove(filename)
 myfile.close()
 
 
