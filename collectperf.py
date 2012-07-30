@@ -65,14 +65,16 @@ f.close()
 print "Saving session file..."
 p = subprocess.call(["/usr/lib/vmware-vcli/apps/session/save_session.pl","--username",username,"--server",vcenterhost,"--password",password,"--savesessionfile",".sessionfile"])
 
+my_env = os.environ
 my_env["VI_SESSIONFILE"] = "./.sessionfile"
 print "Collecting scsi device data for correlation..."
 for hostname in hosts:
-	print "Collecting for " + hostname
-	p = subprocess.Popen([resxtop,"--vihost",hostname,"-m"],env=my_env,stdout=mydata)
-	thishostfh = open(hostname+".emcdata.scsidevs")
-	thishostfh.write(p.stdout.read())
-	thishostfh.close()
+	print "Collecting scsidevs for " + hostname
+	thishostfh = open(hostname+".emcdata.scsidevs","w")
+	p = subprocess.Popen(["vicfg-scsidevs","--vihost",hostname,"-m"],env=my_env,stdout=thishostfh)
+	
+	#thishostfh.write(p.stdout.read())
+	#thishostfh.close()
 
 	
 	

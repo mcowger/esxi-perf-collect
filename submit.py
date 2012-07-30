@@ -68,12 +68,12 @@ randomstring = "".join(random.sample(string.letters+string.digits, 5))
 filebase="emcdata." + randomstring
 zipfilename = filebase + ".zip"
 myfile = zipfile.ZipFile(zipfilename,'w')
-f = open("emc_esxscan.emcdata.txt")
+f = open("emc_esxscan.emcdata.txt","w")
 f.close()
-for filename in glob.glob('*.emcdata*'):
-	myfile.write(filename, os.path.basename(filename), zipfile.ZIP_DEFLATED)
+for filename in glob.glob('*.emcdata.csv'):
 	doBCSDfilter(filename)
-	#os.remove(filename)
+for filename in glob.glob('*.emcdata.*'):
+	myfile.write(filename, os.path.basename(filename), zipfile.ZIP_DEFLATED)
 myfile.close()
 
 
@@ -84,7 +84,7 @@ output = subprocess.Popen(["/usr/bin/curl","-T",zipfilename,"ftp://ftp.emc.com/i
 print output
 
 
-print "File (possibly) uploaded.  Inform your EMC representative to check CSFTP for the following file: ftp://csftp.emc.com/incoming/" + zipfilename
+print "File (possibly) uploaded.  Inform your EMC or partner representative to check CSFTP for the following file: ftp://csftp.emc.com/incoming/" + zipfilename
 print "It should be ready in 5 minutes."
 
 print "...or you can simply email or FTP the above file manually."
