@@ -2,11 +2,29 @@
 
 import csv
 import re
+import optparse
+from optparse import OptionParser
+
+parser = OptionParser()
+parser.add_option("-i", "--infile", dest="outfilename",
+                  help="read stripped data from FILE", metavar="FILE")
+parser.add_option("-o", "--outfile", dest="infilename",
+                  help="write stripped data to FILE", metavar="FILE")
+
+(options, args) = parser.parse_args()
 
 columnMatch = re.compile(r'Physical Disk\([\w+|\-|\:]+\)\\[Commands/sec|Reads/sec|Writes/sec|MBytes Read/sec|MBytes Written/sec]',re.S)
 
-esxtopReader = csv.reader(open('corvir01.esxtop.20101014.txt','rb'),delimiter=',',quotechar='"')
-filteredWriter = csv.writer(open('filtered.csv','wb'), delimiter=',')
+print options.outfilename
+print options.infilename
+
+
+
+esxtopReader = csv.reader(open(options.outfilename,'rb'),delimiter=',',quotechar='"')
+filteredWriter = csv.writer(open(options.infilename,'wb'), delimiter=',')
+
+
+
 
 curIndex = 0
 colIndexesIWant = [0]
