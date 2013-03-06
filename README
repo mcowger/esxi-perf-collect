@@ -3,11 +3,11 @@ This file describes how to use the ESXi Performance Collection Scripts.  They ar
 No warrenties implied.
 
 Requirements:
-vSphere 4.x, 5.0
-vCenter 5.x, 5.0
-vMA 5.x (4.x does not work)
+vSphere 4.x, 5.x
+vCenter 5.x, 5.x
+vMA 5.0 ONLY (4.x and 5.1 do not work): https://my.vmware.com/group/vmware/details?productId=229&downloadGroup=VMA50
 
-Note: Due to a vSphere 5.1 bug, collecting data from a vCenter 5.1 server does NOT work.  There is no workaround, and we are waiting for a bugfix from VMware.
+
 
 General Instructions:
 
